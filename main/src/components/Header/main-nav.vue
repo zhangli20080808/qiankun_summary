@@ -3,7 +3,7 @@
     <div class="main-nav-content">
       <!-- logo内容 -->
       <div class="main-nav-logo">
-        <img src="" alt="">
+        <img src="" alt="" />
       </div>
 
       <!-- 导航列表详情 -->
@@ -21,7 +21,7 @@
       <!-- 搜索 -->
       <div class="main-nav-search">
         <div class="main-nav-search-icon">
-          <img src="../../assets/blue-search.png" alt="">
+          <img src="../../assets/blue-search.png" alt="" />
         </div>
         <div class="main-nav-search-input">
           <input
@@ -29,24 +29,26 @@
             id="main-nav-search"
             v-if="searchStatus"
             @blur="setSearchStatus(false)"
+          />
+          <div
+            class="main-nav-search-input-fake"
+            v-else
+            @click="setSearchStatus(true)"
           >
-          <div class="main-nav-search-input-fake" v-else @click="setSearchStatus(true)">
             快速搜索
           </div>
         </div>
-        <div class="main-nav-search-button">
-          搜索
-        </div>
+        <div class="main-nav-search-button">搜索</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, nextTick, watch } from 'vue'
-import { NAV_LIST } from '../../const'
-import { headerState } from '../../store'
-import { useRouter, useRoute } from 'vue-router'
+import { ref, nextTick, watch } from 'vue';
+import { NAV_LIST } from '../../const';
+import { headerState } from '../../store';
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
   name: 'nav',
@@ -54,38 +56,43 @@ export default {
     const router = useRouter();
     const route = useRoute();
 
-    watch(route, (val) => {
-      for (let i = 0, len = NAV_LIST.length; i < len; i++) {
-        if (
-            NAV_LIST[i].url &&
-            val.fullPath.indexOf(NAV_LIST[i].url) !== -1
-        ) {
-          headerState.setCurrentIndex(i)
-          return
+    watch(
+      route,
+      (val) => {
+        console.log(route, 'route');
+        // val.fullPath -> "/react16#/new-car"
+        // val.fullPath -> "/react16#/rank"
+        // val.fullPath -> ""/vue2#/energy""
+        for (let i = 0, len = NAV_LIST.length; i < len; i++) {
+          if (NAV_LIST[i].url && val.fullPath.indexOf(NAV_LIST[i].url) !== -1) {
+            headerState.setCurrentIndex(i);
+            return;
+          }
         }
-      }
-    }, { deep: true, immediate: true })
+      },
+      { deep: true, immediate: true }
+    );
 
     // 搜索是否得焦
-    let searchStatus = ref(false)
+    let searchStatus = ref(false);
 
     const setSearchStatus = (type) => {
-      searchStatus.value = type
+      searchStatus.value = type;
 
       if (!type) {
-        return
+        return;
       }
       // 得焦的情况下，让input自动获取焦点
       nextTick(() => {
-        const input = document.getElementById('main-nav-search')
+        const input = document.getElementById('main-nav-search');
 
-        input.focus()
-      })
-    }
+        input.focus();
+      });
+    };
 
     const setCurrentIndex = (item) => {
-      router.push(`${item.url}`)
-    }
+      router.push(`${item.url}`);
+    };
 
     return {
       NAV_LIST,
@@ -93,44 +100,44 @@ export default {
       setCurrentIndex,
       searchStatus,
       setSearchStatus,
-    }
-  }
+    };
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-* img{
+* img {
   width: 100%;
   height: 100%;
 }
-.main-nav{
-  &-content{
+.main-nav {
+  &-content {
     width: 1200px;
     height: 100%;
     margin: 0 auto;
     display: flex;
     align-items: center;
   }
-  &-container{
+  &-container {
     width: 100%;
     height: 90px;
-    background: linear-gradient(180deg, #3C6AFB 0%, #75CDFF 100%);
+    background: linear-gradient(180deg, #3c6afb 0%, #75cdff 100%);
   }
-  &-logo{
+  &-logo {
     width: 108px;
     height: 48px;
     opacity: 0;
   }
-  &-list{
+  &-list {
     margin: 0 136px 0 132px;
     font-size: 24px;
     font-weight: bold;
-    color: #FFFFFF;
+    color: #ffffff;
     display: flex;
     height: 100%;
     user-select: none;
 
-    &>div{
+    & > div {
       position: relative;
       margin-right: 30px;
       height: 100%;
@@ -138,27 +145,27 @@ export default {
       align-items: center;
       cursor: pointer;
     }
-    &>div:last-child{
+    & > div:last-child {
       margin-right: 0;
     }
   }
-  &-active:after{
+  &-active:after {
     content: '';
     width: 100%;
     height: 8px;
-    background: #F7B500;
+    background: #f7b500;
     position: absolute;
     bottom: 0;
     left: 0;
   }
-  &-search{
+  &-search {
     width: 260px;
     height: 40px;
-    background: linear-gradient(90deg, #F4F8FF 0%, #E0EBFF 100%) #FFFFFF;
+    background: linear-gradient(90deg, #f4f8ff 0%, #e0ebff 100%) #ffffff;
     border-radius: 8px;
     position: relative;
 
-    &-icon{
+    &-icon {
       width: 20px;
       height: 20px;
       position: absolute;
@@ -166,25 +173,25 @@ export default {
       left: 21px;
     }
 
-    &-input{
+    &-input {
       width: 170px;
       height: 100%;
       position: absolute;
       left: 41px;
 
-      &-fake{
+      &-fake {
         width: 100%;
         height: 100%;
         position: absolute;
         left: 0;
         top: 0;
         padding-left: 6px;
-        color: #61AEE9;
+        color: #61aee9;
         display: flex;
         align-items: center;
       }
 
-      input{
+      input {
         width: 100%;
         height: 100%;
         border: 0;
@@ -195,16 +202,16 @@ export default {
       }
     }
 
-    &-button{
+    &-button {
       width: 52px;
       height: 40px;
-      background: linear-gradient(90deg, #F4F8FF 0%, #E0EBFF 100%) #E0EBFF;
+      background: linear-gradient(90deg, #f4f8ff 0%, #e0ebff 100%) #e0ebff;
       border-radius: 0px 8px 8px 0px;
       position: absolute;
       top: 0;
       right: 0;
       font-size: 14px;
-      color: #0091FF;
+      color: #0091ff;
       line-height: 19px;
       display: flex;
       justify-content: center;

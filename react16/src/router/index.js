@@ -17,7 +17,7 @@ const BasicMap = () => {
       <HashRouter>
         <Switch>
           {/* App页面 */}
-          <Route path="/login" component={Login}/>
+          {/* <Route path="/login" component={Login}/> */}
           <Route path="/new-car" component={NewCar} />
           <Route path="/rank" component={Rank} />
         </Switch>

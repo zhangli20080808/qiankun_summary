@@ -18,7 +18,7 @@ const Login = () => {
   return (
     <div className="login">
       <img className="loginBackground" src={`${globalConfig.baseUrl}/login-background.png`}/>
-      <LoginPanel/>
+      {/* <LoginPanel/> */}
     </div>
   )
 }

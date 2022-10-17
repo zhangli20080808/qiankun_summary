@@ -1,11 +1,11 @@
-const path = require('path');
-const { name } = require('./package');
+const path = require('path')
+const { name } = require('./package')
 
-function resolve(dir) {
-  return path.join(__dirname, dir);
+function resolve (dir) {
+  return path.join(__dirname, dir)
 }
 
-const port = 9004;
+const port = 9004
 
 module.exports = {
   outputDir: 'dist',
@@ -32,8 +32,8 @@ module.exports = {
       // 把子应用打包成 umd 库格式
       libraryTarget: 'umd',
       filename: 'vue2.js',
-      library: 'vue2',
+      library: `${name}`,
       jsonpFunction: `webpackJsonp_${name}`,
     },
   },
-};
+}

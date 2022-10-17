@@ -12,6 +12,7 @@
     "import-html-entry": "^1.11.1",
     "lodash": "^4.17.20",
     "node-sass": "^7.0.3",
+    "qiankun": "^2.8.3",
     "sass-loader": "^10.1.1",
     "single-spa": "5.8.1",
     "test-micro-web": "^1.0.8",

@@ -1,18 +1,20 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const packageName = require('./package.json').name
 
 module.exports = {
   entry: {
     path: ['./index.js']
   },
-  output: {
+  output: { // 打包成umd格式
     path: path.resolve(__dirname, 'dist'),
     filename: 'react15.js',
-    library: 'react15',
+    library: `${packageName}`,
     libraryTarget: 'umd',
     umdNamedDefine: true,
-    publicPath: 'http://localhost:9002/'
+    publicPath: 'http://localhost:9002/',
+    jsonpFunction: `webpackJsonp_${packageName}`,
   },
   module: {
     rules: [

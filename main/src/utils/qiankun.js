@@ -1,6 +1,12 @@
 import { leftNav, headerState, footerState, loading } from '../store';
 
-import { registerMicroApps, start } from 'qiankun';
+import { registerMicroApps, start, initGlobalState } from 'qiankun';
+
+const globalState = {
+  a: 1,
+  b: 2,
+};
+initGlobalState(globalState);
 
 export const starMicroApp = () => {
   // 注册子应用

@@ -16,9 +16,19 @@ export async function bootstrap() {
   console.log('react bootstrap');
 }
 
-export async function mount(app) {
-  setMain(app);
-  console.log('react mount', app);
+export async function mount(props) {
+  setMain(props);
+  console.log('react mount', props);
+  props.onGlobalStateChange((state, prev) => {
+    // state: 变更后的状态; prev 变更前的状态
+    console.log(state, prev, 'onGlobalStateChange');
+  });
+  setTimeout(() => {
+    props.setGlobalState({
+      a: 3,
+      b: 4,
+    });
+  }, 1000);
   render();
 
   // setTimeout(() => {

@@ -8,6 +8,9 @@ export const render = () => {
   ReactDOM.render(<BasicMap />, document.getElementById('app-react'));
 };
 
+if (window.__POWERED_BY_QIANKUN__) {
+  __webpack_public_path__ = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__;
+}
 if (!window.__POWERED_BY_QIANKUN__) {
   render();
 }
@@ -39,11 +42,14 @@ export async function mount(props) {
   //   app.appInfo.headerState.changeHeader(false)
   // }, 3000)
 }
-
-export async function unmount(ctx) {
-  console.log('react unmout');
-  const { container } = ctx;
-  if (container) {
-    document.querySelector(container).innerHTML = '';
-  }
+/**
+ * 应用每次 切出/卸载 会调用的方法，通常在这里我们会卸载微应用的应用实例
+ */
+export async function unmount(props) {
+  console.log('react unmout', props);
+  // const { container } = props;
+  // if (container) {
+  //   document.querySelector(container).innerHTML = '';
+  // }
+  ReactDOM.unmountComponentAtNode(document.getElementById('app-react'));
 }

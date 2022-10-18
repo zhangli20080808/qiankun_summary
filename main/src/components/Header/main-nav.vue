@@ -59,7 +59,7 @@ export default {
     watch(
       route,
       (val) => {
-        console.log(route, 'route');
+        // console.log(route, 'route');
         // val.fullPath -> "/react16#/new-car"
         // val.fullPath -> "/react16#/rank"
         // val.fullPath -> ""/vue2#/energy""

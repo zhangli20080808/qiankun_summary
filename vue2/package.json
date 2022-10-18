@@ -33,6 +33,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
+    "globals": {
+      "__webpack_public_path__": true
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     },

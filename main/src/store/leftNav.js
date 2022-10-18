@@ -4,11 +4,12 @@ import * as appInfo from '../store';
 
 export const navList = [
   {
-    name: 'react15', // 唯一
-    entry: '//localhost:9002',
+    name: 'react15', // 应用名，唯一
+    // 默认会加载9002这个html解析里面的js动态的执行（子应用必须支持跨域）fetch
+    entry: '//localhost:9002', 
     loading,
-    container: '#micro-container',
-    activeRule: '/react15',
+    container: '#micro-container', // 容器名
+    activeRule: '/react15', // 激活的路径
     props: appInfo,
   },
   {

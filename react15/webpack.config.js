@@ -1,16 +1,17 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const packageName = require('./package.json').name
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const packageName = require('./package.json').name;
 
 module.exports = {
   entry: {
-    path: ['./index.js']
+    path: ['./index.js'],
   },
-  output: { // 打包成umd格式
+  output: {
+    // 打包成umd格式
     path: path.resolve(__dirname, 'dist'),
     filename: 'react15.js',
-    library: `${packageName}`,
+    library: packageName,
     libraryTarget: 'umd',
     umdNamedDefine: true,
     publicPath: 'http://localhost:9002/',
@@ -23,34 +24,34 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
-        }
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
+        },
       },
       {
         test: /\.(c|sc)ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: {
           loader: 'url-loader',
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   optimization: {
     splitChunks: false,
-    minimize: false
+    minimize: false,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html'
+      template: './public/index.html',
     }),
 
     new MiniCssExtractPlugin({
-      filename: '[name].css'
-    })
+      filename: '[name].css',
+    }),
   ],
   devServer: {
     headers: { 'Access-Control-Allow-Origin': '*' },
@@ -59,5 +60,5 @@ module.exports = {
     port: 9002,
     historyApiFallback: true,
     hot: true,
-  }
-}
+  },
+};

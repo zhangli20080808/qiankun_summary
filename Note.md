@@ -1,6 +1,8 @@
 ## 框架设计
 
 [架构设计](./images/car.png)
+## 路由基础
+
 
 ### 整体架构
 
@@ -18,15 +20,55 @@ const - subApp，管理和获取注册的子应用
 2. 实现 registerMicroApps，将子应用注册到微前端当中 setList,getList 方法
 
 #### 路由拦截
-router 文件夹
-a. rewriteRouter - 实现路由拦截 
-```js
-// 重写 window的路由跳转
 
+新建router 文件夹，start中调用rewriteRouter方法
+a. rewriteRouter - 实现路由拦截
+
+```js
+import { patchRouter } from '../utils';
+import { turnApp } from './routerHandle';
+// 重写window的路由跳转
+export const rewriteRouter = () => {
+  window.history.pushState = patchRouter(
+    window.history.pushState,
+    'micro_push'
+  );
+  window.history.replaceState = patchRouter(
+    window.history.replaceState,
+    'micro_replace'
+  );
+
+  window.addEventListener('micro_push', turnApp);
+  window.addEventListener('micro_replace', turnApp);
+
+  // 监听返回事件
+  window.onpopstate = async function () {
+    await turnApp();
+  };
+};
 ```
+
 b. routerHandle
 
-utils -> index.js 
+```js
+function turnApp() {
+  console.log('路由切换了');
+}
+```
+
+utils -> index.js
+
+```js
+// 给当前的路由跳转打补丁
+export const patchRouter = (globalEvent, eventName) => {
+  return function () {
+    const e = new Event(eventName);
+    globalEvent.apply(this, arguments);
+    window.dispatchEvent(e);
+  };
+};
+```
+
 ```js
   {
     name: 'react15', // 应用名，唯一
@@ -38,7 +80,6 @@ utils -> index.js
     props: appInfo,
   },
 ```
-1. 
 
 #### 获取首个子应用
 

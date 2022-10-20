@@ -65,6 +65,7 @@ export default {
         // val.fullPath -> ""/vue2#/energy""
         for (let i = 0, len = NAV_LIST.length; i < len; i++) {
           if (NAV_LIST[i].url && val.fullPath.indexOf(NAV_LIST[i].url) !== -1) {
+            // 匹配上了
             headerState.setCurrentIndex(i);
             return;
           }

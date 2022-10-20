@@ -18,7 +18,7 @@ export const NAV_LIST = [
     value: 2,
     url: '/react15#/video',
     hash: '',
-  },
+  }, 
   {
     name: '选车',
     status: false,

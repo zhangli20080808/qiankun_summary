@@ -12,8 +12,6 @@ hash 模式和 history 的区别？
 
 ### hash - 稍微复杂一点的 SPA，都需要路由 通过 hash 的变化触发视图的更新
 
-### H5 history
-
 ### hash 的特点
 
 我们通过 hash 的变化来监听路由的变化
@@ -24,14 +22,14 @@ hash 模式和 history 的区别？
 
 ```js
 // html
-<div id='btn1'>改变hash</div>
+<div id='btn1'>改变hash</div>;
 // hash变化包括
 // 1. js修改 url 2.手动修改url的hash 3. 浏览器 前进后退
 window.onhashchange = (event) => {
   console.log('old-url', event.oldURL);
   console.log('new-url', event.newURL);
 
-  console.log('hash',location.hash)
+  console.log('hash', location.hash);
 };
 
 // 页面初次加载 获取 hash
@@ -47,6 +45,42 @@ document.getElementById('btn1').addEventListener('click', function () {
 // 指定要事件触发时执行的函数  addEventListener补充
 // true - 事件句柄在捕获阶段执行
 // false- 默认。事件句柄在冒泡阶段执行
+```
+
+### H5 history
+
+- 用 URL 规范的路由，但跳转时不刷新页面 - 看不出是前端还是后端路由，可以简单理解
+- 主要通过 history.pushState 和 onpopstate 来实现
+
+普通路由-history 路由
+
+- https://github.com/zhangli20080808/xxxx 刷新页面
+- https://github.com/zhangli20080808/xxxx/yyy 前端路由，刷新不页面
+- https://github.com/zhangli20080808/xxxx/yyy/zzz 前端路由，刷新不页面
+  比如由第三个页面后退到第二个，也是通过前端路由跳转，不刷新页面
+
+```js
+// 页面初次加载，获取 path
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('load', location.pathname);
+});
+
+// 打开一个新的路由
+// 【注意】用 pushState 方式，浏览器不会刷新页面
+document.getElementById('btn1').addEventListener('click', () => {
+  const state = { name: 'page1' };
+  console.log('切换路由到', 'page1');
+  history.pushState(state, '', 'page1'); // 重要！！
+});
+
+// 监听浏览器前进、后退
+window.onpopstate = (event) => {
+  // 重要！！
+  console.log('onpopstate', event.state, location.pathname);
+};
+
+// 需要 server 端配合，可参考
+// https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90
 ```
 
 ### 整体架构

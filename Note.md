@@ -1,8 +1,53 @@
 ## 框架设计
 
 [架构设计](./images/car.png)
+
 ## 路由基础
 
+hash 模式和 history 的区别？
+
+- 语法结构不同 - 以#结尾，当我们刷新页面，页面并没有变化，#前面的部分，我们一般认为是一个完整的 url，#后面的值可以理解为辅助说明(锚点，定位)，并不会改变页面的资源。history 模式，要重新请求资源
+- seo 问题 - 对 hash 模式不友好，整个站点就一个链接
+- 部署方式不同
+
+### hash - 稍微复杂一点的 SPA，都需要路由 通过 hash 的变化触发视图的更新
+
+### H5 history
+
+### hash 的特点
+
+我们通过 hash 的变化来监听路由的变化
+
+- hash 的变化会触发网页跳转，即浏览器的前进后退，但浏览器不会刷新
+- hash 变化 永远不会刷新页面
+- hash 永远不会提交到 serve 端
+
+```js
+// html
+<div id='btn1'>改变hash</div>
+// hash变化包括
+// 1. js修改 url 2.手动修改url的hash 3. 浏览器 前进后退
+window.onhashchange = (event) => {
+  console.log('old-url', event.oldURL);
+  console.log('new-url', event.newURL);
+
+  console.log('hash',location.hash)
+};
+
+// 页面初次加载 获取 hash
+document.addEventListener('DOMContentLoaded', () => {
+  console.log(location.hash);
+});
+
+// js修改url
+document.getElementById('btn1').addEventListener('click', function () {
+  location.hash = '#/user';
+});
+
+// 指定要事件触发时执行的函数  addEventListener补充
+// true - 事件句柄在捕获阶段执行
+// false- 默认。事件句柄在冒泡阶段执行
+```
 
 ### 整体架构
 
@@ -21,7 +66,7 @@ const - subApp，管理和获取注册的子应用
 
 #### 路由拦截
 
-新建router 文件夹，start中调用rewriteRouter方法
+新建 router 文件夹，start 中调用 rewriteRouter 方法
 a. rewriteRouter - 实现路由拦截
 
 ```js

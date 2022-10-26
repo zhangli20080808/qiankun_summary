@@ -7,7 +7,7 @@ import { Custom } from './customevent'
 
 const custom = new Custom()
 custom.on('test', (data) => {
-  console.log(data)
+  console.log(data) 
 })
 
 window.custom = custom

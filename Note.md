@@ -161,13 +161,67 @@ export const patchRouter = (globalEvent, eventName) => {
 ```
 
 #### 获取首个子应用
-1. 实现start函数,开启微前端框架
-  a. 验证当前子应用列表是否为空
-  b. 有子应用的内容，查找到当前路由的子应用. 根据pathname和activeRule作对比
-  c. app & hash -> window.history.pushState('', '', url) 设置标记 window.__CURRENT_SUB_APP__ = app.activeRule
-  c. !hash  ->  window.history.pushState(null, null, '/vue3#/index')
-  a. 验证当前子应用列表是否为空
+
+1. 实现 start 函数,开启微前端框架
+   a. 验证当前子应用列表是否为空
+   b. 有子应用的内容，查找到当前路由的子应用. 根据 pathname 和 activeRule 作对比
+   c. app & hash -> window.history.pushState('', '', url) 设置标记 window.**CURRENT_SUB_APP** = app.activeRule
+   c. !hash -> window.history.pushState(null, null, '/vue3#/index')
+   a. isTurnChild 函数监听子应用是否做了切换，进行后续操作
+
 #### 微前端生命周期
+
+```js
+// 缓存生命周期
+let lifecycle = {};
+export const getMainLifecycle = () => lifecycle;
+export const setMainLifecycle = (data) => (lifecycle = data);
+// 注册
+export const registerMicroApps = (appList, lifeCycle) => {
+  setList(appList);
+  setMainLifecycle(lifeCycle);
+};
+export const starMicroApp = () => {
+  // 注册子应用
+  registerMicroApps(
+    leftNav.navList,
+    // 生命周期
+    {
+      beforeLoad: [
+        (app) => {
+          // 每次改动，都将头部和底部显示出来，不需要头部和底部的页面需要子应用自己处理
+          headerState.changeHeader(true);
+          footerState.changeFooter(true);
+          console.log('开始加载 -- ', app.name);
+          loading.openLoading();
+        },
+      ],
+      afterMount: [
+        (app) => {
+          console.log('加载完成 -- ', app.name);
+          setTimeout(() => {
+            loading.closeLoading();
+          }, 200);
+        },
+      ],
+      afterUnmount: [
+        (app) => {
+          console.log('卸载完成 -- ', app.name);
+        },
+      ],
+    },
+    {}
+  );
+
+  // 如果当前是跟路由，且没有子应用，默认进入到 vue3
+  if (window.location.pathname === '/') {
+    window.history.pushState(null, null, '/vue3#/index');
+  }
+
+  // 启动, 开启微前端框架
+  start();
+};
+```
 
 #### 获取需要展示的页面 - 加载和解析 html
 

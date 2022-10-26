@@ -161,7 +161,12 @@ export const patchRouter = (globalEvent, eventName) => {
 ```
 
 #### 获取首个子应用
-
+1. 实现start函数,开启微前端框架
+  a. 验证当前子应用列表是否为空
+  b. 有子应用的内容，查找到当前路由的子应用. 根据pathname和activeRule作对比
+  c. app & hash -> window.history.pushState('', '', url) 设置标记 window.__CURRENT_SUB_APP__ = app.activeRule
+  c. !hash  ->  window.history.pushState(null, null, '/vue3#/index')
+  a. 验证当前子应用列表是否为空
 #### 微前端生命周期
 
 #### 获取需要展示的页面 - 加载和解析 html

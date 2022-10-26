@@ -21,7 +21,7 @@ export const registerMicroApps = (appList, lifeCycle) => {
   setMainLifecycle(lifeCycle)
 }
 
-// 启动微前端框架
+// 启动微前端框架 
 export const start = () => {
 
   // 首先验证当前子应用列表是否为空

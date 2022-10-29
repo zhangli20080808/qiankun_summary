@@ -189,6 +189,7 @@ export const starMicroApp = () => {
     {
       beforeLoad: [
         (app) => {
+          // 比如说 权限相关的一些验证
           // 每次改动，都将头部和底部显示出来，不需要头部和底部的页面需要子应用自己处理
           headerState.changeHeader(true);
           footerState.changeFooter(true);

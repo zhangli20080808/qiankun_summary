@@ -57,10 +57,10 @@ export const getResources = async (root, entry) => {
     const children = element.children
     const parent = element.parent;
 
-    // 第一步处理位于 script 中的内容
+    // 第一步处理位于 script 中的内容 判断是否是 script标签
     if (element.nodeName.toLowerCase() === 'script') {
       const src = element.getAttribute('src');
-      if (!src) {
+      if (!src) { // 没有外联js资源 outerHTML-包括标签的所有html内容
         script.push(element.outerHTML)
       } else {
         if (src.startsWith('http')) {

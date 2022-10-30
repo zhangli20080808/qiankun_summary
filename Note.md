@@ -170,7 +170,9 @@ export const patchRouter = (globalEvent, eventName) => {
    a. isTurnChild 函数监听子应用是否做了切换，进行后续操作
 
 #### 微前端生命周期
-
+1. 获取到上一个应用，在切换的时候，卸载上一个应用，执行对应的卸载周期
+2. 获取到需要跳转的下一个应用，执行下一个应用的各个生命周期
+3. 实现一些列方法
 ```js
 // 缓存生命周期
 let lifecycle = {};
@@ -225,7 +227,46 @@ export const starMicroApp = () => {
 ```
 
 #### 获取需要展示的页面 - 加载和解析 html
+1. 实现加载html的方法 loadHtml，使用get请求获取子应用信息
+```js
+export const beforeLoad = async (app) => {
+  await runMainLifeCycle('beforeLoad')
+  app && app.beforeLoad && app.beforeLoad()
 
+  // 获取所有的html资源内容
+  const subApp = await loadHtml(app) // 获取的是子应用的内容
+  subApp && subApp.beforeLoad && subApp.beforeLoad()
+
+  return subApp
+}
+```
+2. 实现 parseHtml 方法
+```js
+// fetch
+export const fetchResource = url => fetch(url).then(async res => await res.text())
+export const parseHtml = async (entry, name) => {
+  if (cache[name]) {
+    return cache[name]
+  }
+  const html = await fetchResource(entry)
+
+  let allScript = []
+  const div = document.createElement('div')
+  div.innerHTML = html
+// 标签 link  script
+  const [dom, scriptUrl, script] = await getResources(div, entry)
+
+  const fetchedScripts = await Promise.all(scriptUrl.map(async item => fetchResource(item)))
+
+  allScript = script.concat(fetchedScripts)
+  cache[name] = [dom, allScript]
+
+  return [dom, allScript]
+}
+
+```
+
+```
 #### 获取需要展示的页面 - 加载和解析 js
 
 #### 执行 js 脚本

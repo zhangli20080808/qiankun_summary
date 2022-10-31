@@ -264,17 +264,47 @@ export const parseHtml = async (entry, name) => {
   return [dom, allScript]
 }
 
-```
-
-```
 #### 获取需要展示的页面 - 加载和解析 js
+1. new Function
+```js
+export const performScriptForFunction = (script, appName, global) => {
+  window.proxy = global
+  console.log(global)
+  const scriptText = `
+    return ((window) => {
+      ${script}
+      return window['${appName}']
+    })(window.proxy)
+  `
+  return new Function(scriptText)()
+}
+```
+2. eval
 
 #### 执行 js 脚本
 
 ### 辅助功能
 
 #### 微前端环境变量设置
-
+```js
+// 子应用生命周期处理， 环境变量设置
+export const sandBox = (app, script) => {
+  const proxy = new ProxySandbox()
+  if (!app.proxy) {
+    app.proxy = proxy
+  }
+  // 1. 设置环境变量
+  window.__MICRO_WEB__ = true
+  // 2. 运行js文件，获取应用声明周期内容 并且挂载到
+  const lifecycle = performScriptForEval(script, app.name, app.proxy.proxy)
+  // 生命周期，挂载到app上
+  if (isCheckLifeCycle(lifecycle)) {
+    app.bootstrap = lifecycle.bootstrap
+    app.mount = lifecycle.mount
+    app.unmount = lifecycle.unmount
+  }
+}
+```
 #### 运行环境隔离 - 快照沙箱
 
 #### 运行环境隔离 - 代理沙箱

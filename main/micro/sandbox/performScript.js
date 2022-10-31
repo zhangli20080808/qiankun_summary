@@ -13,7 +13,7 @@ export const performScriptForFunction = (script, appName, global) => {
 }
 
 export const performScriptForEval = (script, appName, global) => {
-  // library window.appName
+  // library ->  window.appName 子应用打包后的信息
   window.proxy = global
   const scriptText = `
     ((window) => {
@@ -23,3 +23,4 @@ export const performScriptForEval = (script, appName, global) => {
   `
   return eval(scriptText)// app module mount
 }
+ 

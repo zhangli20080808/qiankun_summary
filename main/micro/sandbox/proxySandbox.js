@@ -22,7 +22,7 @@ export class ProxySandbox{
         defaultValue[key] = value
         return true
       }
-    })
+    }) 
 
   }
 

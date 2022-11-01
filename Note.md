@@ -306,7 +306,36 @@ export const sandBox = (app, script) => {
 }
 ```
 #### 运行环境隔离 - 快照沙箱
-
+为什么需要隔离？ -  主要是对于变量的影响，将子应用运行到沙箱环境中，来解决这个问题
+```js
+// 快照沙箱
+// 应用场景：比较老版本的浏览器，降级方案，可能会挂很多的属性
+export class SnapShotSandbox {
+  constructor() {
+    // 1. 代理对象
+    this.proxy = window
+    this.active()
+  }
+  // 沙箱激活
+  active() {
+    // 创建一个沙箱快照
+    this.snapshot = new Map()
+    // 遍历全局环境
+    for(const key in window) {
+      this.snapshot[key] = window[key]
+    }
+  }
+  // 沙箱销毁
+  inactive () {
+    for (const key in window) {
+      if (window[key] !== this.snapshot[key]) {
+        // 还原操作
+        window[key] = this.snapshot[key]
+      }
+    }
+  }
+}
+```
 #### 运行环境隔离 - 代理沙箱
 
 #### css 样式隔离
